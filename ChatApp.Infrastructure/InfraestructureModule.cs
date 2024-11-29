@@ -27,7 +27,7 @@ public static class InfraestructureModule
         }
         private static IServiceCollection AddRepositories(this IServiceCollection services)
         {
-
+            services.AddScoped<ChatMessageRepository, ChatMessageRepository>();
 
             return services;
         }
