@@ -30,7 +30,7 @@ public class SendMessageCommandHandler : IRequestHandler<SendMessageCommand, Uni
 
             var botMessage = new ChatMessage(
                 $"{stockCode.ToUpper()}: quote is ${quote} per share",
-                0,
+                "StockBot",
                 request.ChatRoomId,
                 true);
 
