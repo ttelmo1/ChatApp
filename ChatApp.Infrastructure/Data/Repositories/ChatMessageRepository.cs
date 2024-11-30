@@ -1,7 +1,7 @@
 using System;
 using ChatApp.Domain.Entities;
-using ChatApp.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
+using ChatApp.Domain.Repositories;
 
 namespace ChatApp.Infrastructure.Data.Repositories;
 
