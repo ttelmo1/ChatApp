@@ -38,6 +38,7 @@ public static class InfraestructureModule
         private static IServiceCollection AddServices(this IServiceCollection services)
         {
             services.AddScoped<IRabbitMQService, RabbitMQService>();
+            services.AddScoped<IStockQuoteService, StockQuoteService>();
 
             return services;
         }
