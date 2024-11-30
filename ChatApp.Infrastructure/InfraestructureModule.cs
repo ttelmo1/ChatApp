@@ -1,5 +1,7 @@
+using ChatApp.Domain.Services;
 using ChatApp.Infrastructure.Data;
 using ChatApp.Infrastructure.Data.Repositories;
+using ChatApp.Infrastructure.Data.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,6 +13,7 @@ public static class InfraestructureModule
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
             services
+                .AddServices()
                 .AddRepositories()
                 .AddData(configuration);
 
@@ -28,6 +31,13 @@ public static class InfraestructureModule
         private static IServiceCollection AddRepositories(this IServiceCollection services)
         {
             services.AddScoped<ChatMessageRepository, ChatMessageRepository>();
+
+            return services;
+        }
+
+        private static IServiceCollection AddServices(this IServiceCollection services)
+        {
+            services.AddScoped<IRabbitMQService, RabbitMQService>();
 
             return services;
         }
