@@ -1,13 +1,13 @@
-using System;
 using ChatApp.Domain.Entities;
 using ChatApp.Domain.Repositories;
+using ChatApp.Domain.Services;
 using MediatR;
 
 namespace ChatApp.Application.Commands.SendMessage;
 
 public class SendMessageCommandHandler : IRequestHandler<SendMessageCommand, Unit>
 {
-    private readonly IChatMessageRepository _messageRepository;
+    private readonly IChatMessageRepository _chatMessageRepository;
     private readonly IStockQuoteService _stockQuoteService;
     private readonly IRabbitMQService _rabbitMQService;
     
@@ -16,7 +16,7 @@ public class SendMessageCommandHandler : IRequestHandler<SendMessageCommand, Uni
         IStockQuoteService stockQuoteService,
         IRabbitMQService rabbitMQService)
     {
-        _messageRepository = messageRepository;
+        _chatMessageRepository = messageRepository;
         _stockQuoteService = stockQuoteService;
         _rabbitMQService = rabbitMQService;
     }
@@ -34,7 +34,7 @@ public class SendMessageCommandHandler : IRequestHandler<SendMessageCommand, Uni
                 request.ChatRoomId,
                 true);
 
-            await _rabbitMQService.PublishMessageAsync("stock_quotes", botMessage);
+            await _rabbitMQService.PublishAsync("stock_quotes", botMessage);
             return Unit.Value;
         }
 
@@ -42,7 +42,7 @@ public class SendMessageCommandHandler : IRequestHandler<SendMessageCommand, Uni
             request.Content,
             request.UserSenderId,
             request.ChatRoomId);
-        await _messageRepository.AddAsync(message);
+        await _chatMessageRepository.AddMessageAsync(message);
         return Unit.Value;
     }
 }
