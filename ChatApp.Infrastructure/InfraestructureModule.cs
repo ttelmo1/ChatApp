@@ -1,3 +1,4 @@
+using ChatApp.Domain.Repositories;
 using ChatApp.Domain.Services;
 using ChatApp.Infrastructure.Data;
 using ChatApp.Infrastructure.Data.Repositories;
@@ -30,7 +31,8 @@ public static class InfraestructureModule
         }
         private static IServiceCollection AddRepositories(this IServiceCollection services)
         {
-            services.AddScoped<ChatMessageRepository, ChatMessageRepository>();
+            services.AddScoped<IChatMessageRepository, ChatMessageRepository>();
+            services.AddScoped<IChatRoomRepository, ChatRoomRepository>();
 
             return services;
         }
