@@ -1,6 +1,6 @@
 using System;
 
-namespace ChatApp.Domain.Services;
+namespace ChatApp.Infraestructure.Services.Interfaces;
 
 public interface IRabbitMQService
 {
