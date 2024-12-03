@@ -8,6 +8,7 @@ COPY ChatApp.API/*.csproj ./ChatApp.API/
 COPY ChatApp.Application/*.csproj ./ChatApp.Application/
 COPY ChatApp.Domain/*.csproj ./ChatApp.Domain/
 COPY ChatApp.Infrastructure/*.csproj ./ChatApp.Infrastructure/
+COPY Tests/*.csproj ./Tests/
 
 # Restaura as dependências
 RUN dotnet restore

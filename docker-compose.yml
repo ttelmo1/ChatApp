@@ -6,24 +6,14 @@ services:
       context: .
       dockerfile: ChatApp.API/Dockerfile
     ports:  
-      - "8080:8080" 
+      - "8080:8080"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=ChatApp;User=sa;Password=Chat@App1234;Trusted_Connection=True;TrustServerCertificate=True;
     depends_on:
-      - sqlserver
       - rabbitmq
 
-  sqlserver:
-    image: mcr.microsoft.com/mssql/server:2022-latest
-    container_name: sqlserver
-    ports:
-      - "1433:1433"
-    environment:
-      - ACCEPT_EULA=Y
-      - SA_PASSWORD=Chat@App1234
-    volumes:
-      - sql_data:/var/opt/mssql
+
 
   rabbitmq:
     image: rabbitmq:3-management
@@ -34,6 +24,10 @@ services:
     environment:
       - RABBITMQ_DEFAULT_USER=guest
       - RABBITMQ_DEFAULT_PASS=guest
+    # networks:
+    #   - default
 
-volumes:
-  sql_data:
+
+# networks:
+#   default:
+#     driver: bridge
