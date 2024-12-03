@@ -27,8 +27,8 @@ public class RabbitMQService : IRabbitMQService
                 UserName = configuration["RabbitMQ:UserName"] ?? "guest",
                 Password = configuration["RabbitMQ:Password"] ?? "guest"
             };
-            _connection = factory.CreateConnectionAsync().Result;
-            _channel = _connection.CreateChannelAsync().Result;
+            _connection = factory.CreateConnectionAsync().GetAwaiter().GetResult();
+            _channel = _connection.CreateChannelAsync().GetAwaiter().GetResult();
 
         }
         catch (Exception ex)
@@ -71,8 +71,6 @@ public class RabbitMQService : IRabbitMQService
                 exchange: "",
                 routingKey: queueName,
                 body: body);
-
-            await Task.CompletedTask;
         }
         catch (Exception ex)
         {
@@ -105,7 +103,7 @@ public class RabbitMQService : IRabbitMQService
 
             await _channel.BasicConsumeAsync(
                 queue: queueName,
-                autoAck: true,
+                autoAck: false,
                 consumer: consumer);
 
             await Task.CompletedTask;

@@ -14,7 +14,7 @@ public class ChatMessageRepository : IChatMessageRepository
         _context = context;
     }
 
-     public async Task<IEnumerable<ChatMessage>> GetLastMessagesAsync(int chatRoomId, int count = 50)
+    public async Task<IEnumerable<ChatMessage>> GetLastMessagesAsync(string chatRoomId, int count = 50)
     {
         return await _context.ChatMessages
             .Where(m => m.ChatRoomId == chatRoomId)

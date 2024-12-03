@@ -3,7 +3,6 @@ using MediatR;
 
 namespace ChatApp.Application.Commands.CreateRoom;
 
-public class CreateRoomCommand : IRequest<int>
+public class CreateRoomCommand : IRequest<string>
 {
-    public string Name { get; set; }
 }

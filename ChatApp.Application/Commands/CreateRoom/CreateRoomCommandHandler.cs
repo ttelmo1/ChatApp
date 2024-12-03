@@ -5,7 +5,7 @@ using MediatR;
 
 namespace ChatApp.Application.Commands.CreateRoom;
 
-public class CreateRoomCommandHandler : IRequestHandler<CreateRoomCommand, int>
+public class CreateRoomCommandHandler : IRequestHandler<CreateRoomCommand, string>
 {
     private readonly IChatRoomRepository _chatRoomRepository;
 
@@ -14,9 +14,9 @@ public class CreateRoomCommandHandler : IRequestHandler<CreateRoomCommand, int>
         _chatRoomRepository = chatRoomRepository;
     }
 
-    public async Task<int> Handle(CreateRoomCommand request, CancellationToken cancellationToken)
+    public async Task<string> Handle(CreateRoomCommand request, CancellationToken cancellationToken)
     {
-        var room = new ChatRoom(request.Name);
+        var room = new ChatRoom();
         await _chatRoomRepository.AddAsync(room);
         return room.Id;
     }

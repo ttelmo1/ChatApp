@@ -4,12 +4,11 @@ namespace ChatApp.Domain.Entities;
 
 public class ChatRoom
 {
-    public int Id { get; private set; }
-    public string Name { get; private set; }
+    public string Id { get; private set; }
     public List<ChatMessage> Messages { get; private set; } = new List<ChatMessage>();
 
-    public ChatRoom(string name)
+    public ChatRoom()
     {
-        Name = name;
+        Id = Guid.NewGuid().ToString();
     }
 }

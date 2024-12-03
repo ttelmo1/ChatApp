@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Text;
 using ChatApp.API.DTOs.User;
 using ChatApp.Infrastructure.Identity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -31,6 +32,7 @@ public class AuthController : ControllerBase
         {
             var user = new ApplicationUser
             {
+                Name = registerDto.Username,
                 UserName = registerDto.Username,
                 Email = registerDto.Email
             };
@@ -42,7 +44,7 @@ public class AuthController : ControllerBase
                 return Ok(new { message = "User registered successfully" });
             }
 
-            return BadRequest("Failed to register");
+            return BadRequest(result.Errors);
         }
         catch (Exception ex)
         {
@@ -80,6 +82,8 @@ public class AuthController : ControllerBase
     {
         var claims = new[]
         {
+            new Claim(ClaimTypes.Name, user.UserName),        
+            new Claim(ClaimTypes.NameIdentifier, user.Id), 
             new Claim(JwtRegisteredClaimNames.Sub, user.Id),
             new Claim(JwtRegisteredClaimNames.Email, user.Email),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),

@@ -13,7 +13,7 @@ public static class InfraestructureModule
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-            services
+            services             
                 .AddServices()
                 .AddRepositories()
                 .AddData(configuration);
@@ -25,7 +25,9 @@ public static class InfraestructureModule
         {
             var connectionString = configuration.GetConnectionString("DefaultConnection");
 
-            services.AddDbContext<ApplicationDbContext>(o => o.UseSqlServer(connectionString));
+            services.AddDbContext<ApplicationDbContext>(o => 
+            o.UseSqlServer(connectionString, sqlOptions => 
+                sqlOptions.EnableRetryOnFailure()));
 
             return services;
         }
@@ -39,7 +41,7 @@ public static class InfraestructureModule
 
         private static IServiceCollection AddServices(this IServiceCollection services)
         {
-            services.AddScoped<IRabbitMQService, RabbitMQService>();
+            services.AddSingleton<IRabbitMQService, RabbitMQService>();
             services.AddScoped<IStockQuoteService, StockQuoteService>();
 
             return services;

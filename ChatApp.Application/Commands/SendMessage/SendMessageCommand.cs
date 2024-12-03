@@ -7,6 +7,6 @@ public class SendMessageCommand : IRequest<Unit>
 {
     public string Content { get; set; }
     public string UserSenderId { get; set; }
-    public int ChatRoomId { get; set; }
+    public string ChatRoomId { get; set; }
 }
 

@@ -6,6 +6,6 @@ namespace ChatApp.Application.Queries.GetMessages;
 
 public class GetMessagesQuery : IRequest<IEnumerable<ChatMessage>>
 {
-    public int RoomId { get; set; }
+    public string RoomId { get; set; }
     public int Count { get; set; }
 }
