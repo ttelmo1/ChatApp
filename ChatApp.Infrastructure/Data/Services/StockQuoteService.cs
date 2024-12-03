@@ -1,13 +1,13 @@
 ﻿using System.Globalization;
-using ChatApp.Domain.Services;
+using ChatApp.Infraestructure.Models;
+using ChatApp.Infraestructure.Services.Interfaces;
 using CsvHelper;
-using Microsoft.IdentityModel.Tokens;
 
 namespace ChatApp.Infrastructure.Data.Services;
 
 public class StockQuoteService : IStockQuoteService
 {
-    public async Task<decimal> GetStockQuoteAsync(string stockCode)
+    public async Task<ResultViewModel<decimal>> GetStockQuoteAsync(string stockCode)
     {
         try
         {
@@ -19,13 +19,20 @@ public class StockQuoteService : IStockQuoteService
 
             var records = csv.GetRecords<StockQuote>().ToList();
             var record = records.FirstOrDefault();
-            if(record == null) throw new Exception("Invalid stock code");
+            if(record == null)
+            {
+                return ResultViewModel<decimal>.Error($"Stock code {stockCode.ToUpper()} not found");
+            }
 
-            return record.Close;
+            return ResultViewModel<decimal>.Success(record.Close);
         }
         catch (Exception ex)
         {
-            throw new Exception("Error getting stock quote", ex);
+            if(ex.Message.StartsWith("The conversion cannot be performed."))
+            {
+                return ResultViewModel<decimal>.Error($"Stock code {stockCode.ToUpper()} not found");
+            }
+            return ResultViewModel<decimal>.Error(ex.Message);
         }
     }
 

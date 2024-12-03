@@ -1,6 +1,6 @@
 using ChatApp.API.Hubs;
 using ChatApp.Domain.Entities;
-using ChatApp.Domain.Services;
+using ChatApp.Infraestructure.Services.Interfaces;
 using Microsoft.AspNetCore.SignalR;
 
 namespace ChatApp.API.Services;

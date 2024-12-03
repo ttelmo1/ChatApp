@@ -5,7 +5,6 @@ using ChatApp.API.Hubs;
 using ChatApp.Application.Commands.CreateRoom;
 using ChatApp.Application.Queries.GetMessages;
 using ChatApp.Application.Queries.GetRooms;
-using ChatApp.Domain.Services;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
@@ -13,6 +12,7 @@ using Moq;
 using Xunit;
 using FluentAssertions;
 using ChatApp.Domain.Entities;
+using ChatApp.Infraestructure.Services.Interfaces;
 
 namespace ChatApp.Tests.Controllers;
 

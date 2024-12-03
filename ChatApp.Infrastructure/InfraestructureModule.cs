@@ -1,5 +1,5 @@
 using ChatApp.Domain.Repositories;
-using ChatApp.Domain.Services;
+using ChatApp.Infraestructure.Services.Interfaces;
 using ChatApp.Infrastructure.Data;
 using ChatApp.Infrastructure.Data.Repositories;
 using ChatApp.Infrastructure.Data.Services;

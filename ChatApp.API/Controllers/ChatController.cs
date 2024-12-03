@@ -1,10 +1,9 @@
 using System;
 using ChatApp.API.Hubs;
 using ChatApp.Application.Commands.CreateRoom;
-using ChatApp.Application.Commands.SendMessage;
 using ChatApp.Application.Queries.GetMessages;
 using ChatApp.Application.Queries.GetRooms;
-using ChatApp.Domain.Services;
+using ChatApp.Infraestructure.Services.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
