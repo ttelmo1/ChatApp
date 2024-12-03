@@ -40,7 +40,7 @@ public class ChatControllerTests
     public async Task GetRooms_ReturnsOkResult()
     {
         // Arrange
-        var expectedRooms = new List<ChatRoom>(); // Substitua Room pelo seu tipo real
+        var expectedRooms = new List<ChatRoom>(); 
         _mediatorMock.Setup(m => m.Send(It.IsAny<GetRoomsQuery>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(expectedRooms);
 
@@ -63,12 +63,10 @@ public class ChatControllerTests
 
         // Act
         var result = await _controller.CreateRoom();
-        // var roomId = ((dynamic)((CreatedAtActionResult)result).RouteValues).roomId;
 
         // Assert
         var createdAtActionResult = Assert.IsType<CreatedAtActionResult>(result);
         Assert.Equal(nameof(_controller.GetRooms), createdAtActionResult.ActionName);
-        // Assert.Equal(expectedRoomId, roomId);
     }
 
     [Fact]
@@ -77,7 +75,7 @@ public class ChatControllerTests
         // Arrange
         var roomId = "room123";
         var count = 50;
-        var expectedMessages = new List<ChatMessage>(); // Substitua Message pelo seu tipo real
+        var expectedMessages = new List<ChatMessage>(); 
         _mediatorMock.Setup(m => m.Send(It.Is<GetMessagesQuery>(q => 
             q.RoomId == roomId && q.Count == count), It.IsAny<CancellationToken>()))
             .ReturnsAsync(expectedMessages);
