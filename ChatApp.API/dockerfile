@@ -1,8 +1,7 @@
-# Etapa 1: Construção
+
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /app
 
-# Copia os arquivos da solução
 COPY *.sln .
 COPY ChatApp.API/*.csproj ./ChatApp.API/
 COPY ChatApp.Application/*.csproj ./ChatApp.Application/
@@ -10,20 +9,20 @@ COPY ChatApp.Domain/*.csproj ./ChatApp.Domain/
 COPY ChatApp.Infrastructure/*.csproj ./ChatApp.Infrastructure/
 COPY Tests/*.csproj ./Tests/
 
-# Restaura as dependências
+
 RUN dotnet restore
 
-# Copia o restante dos arquivos
+
 COPY . .
 
-# Build da aplicação
+
 RUN dotnet build -c Release -o /out
 
-# Etapa 2: Execução
+
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
 COPY --from=build /out .
 
-# Porta da API
+
 EXPOSE 8080
 ENTRYPOINT ["dotnet", "ChatApp.API.dll"]

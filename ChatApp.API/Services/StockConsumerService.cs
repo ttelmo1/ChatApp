@@ -27,12 +27,11 @@ public class StockConsumerService : BackgroundService
         {
             try
             {
-                _logger.LogInformation("StockConsumerService iniciando...");
+                _logger.LogInformation("StockConsumerService starting...");
                 
                 await _rabbitMQService.SubscribeAsync<ChatMessage>("stock_quotes", async (message) =>
                 {
-                    Console.WriteLine($"Mensagem recebida: {message.Content} para sala {message.ChatRoomId}");
-                    _logger.LogInformation($"Mensagem recebida: {message.Content} para sala {message.ChatRoomId}");
+                    _logger.LogInformation($"Message received: {message.Content} for room {message.ChatRoomId}");
                     
                     await _hubContext.Clients.Group(message.ChatRoomId)
                         .SendAsync("ReceiveMessage",
@@ -41,14 +40,14 @@ public class StockConsumerService : BackgroundService
                             message.Timestamp.ToString("O"),
                             cancellationToken: stoppingToken);
                             
-                    _logger.LogInformation("Mensagem enviada via SignalR");
+                    _logger.LogInformation("Message sent via SignalR");
                 });
 
                 await Task.Delay(Timeout.Infinite, stoppingToken);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Erro no StockConsumerService");
+                _logger.LogError(ex, "Error in StockConsumerService");
                 await Task.Delay(5000, stoppingToken); 
             }
         }
