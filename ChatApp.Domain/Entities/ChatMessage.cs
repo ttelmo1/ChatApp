@@ -7,14 +7,12 @@ public class ChatMessage
     public DateTime Timestamp { get; private set; }
     public string UserId { get; private set; }
     public string ChatRoomId { get; private set; }
-    public bool IsFromBot { get; private set; }
     
-    public ChatMessage(string content, string userId, string chatRoomId, bool isFromBot = false)
+    public ChatMessage(string content, string userId, string chatRoomId)
     {
         Content = content;
         UserId = userId;
         ChatRoomId = chatRoomId;
-        IsFromBot = isFromBot;
         Timestamp = DateTime.UtcNow;
     }
 

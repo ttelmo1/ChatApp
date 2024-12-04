@@ -43,7 +43,7 @@ public class ChatHub : Hub
         };
 
         await _mediator.Send(command);
-        if(message.StartsWith("/stock=")) return;
+        if(message.Trim().StartsWith("/stock=")) return;
 
         var timestamp = DateTime.UtcNow.ToString("O");
         await Clients.Group(roomName).SendAsync("ReceiveMessage", user, message, timestamp);

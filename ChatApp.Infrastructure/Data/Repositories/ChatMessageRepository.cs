@@ -24,7 +24,14 @@ public class ChatMessageRepository : IChatMessageRepository
     
     public async Task AddMessageAsync(ChatMessage message)
     {
-        await _context.ChatMessages.AddAsync(message);
-        await _context.SaveChangesAsync();
+        try
+        {
+            await _context.ChatMessages.AddAsync(message);
+            await _context.SaveChangesAsync();
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("An error occurred while saving the message", ex);
+        }
     }
 }

@@ -53,6 +53,17 @@ namespace ChatApp.Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ChatRooms",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ChatRooms", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -159,23 +170,6 @@ namespace ChatApp.Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ChatRooms",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ChatRooms", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ChatRooms_AspNetUsers_ApplicationUserId",
-                        column: x => x.ApplicationUserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "ChatMessages",
                 columns: table => new
                 {
@@ -184,8 +178,7 @@ namespace ChatApp.Infrastructure.Persistence.Migrations
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ChatRoomId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    IsFromBot = table.Column<bool>(type: "bit", nullable: false)
+                    ChatRoomId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -246,11 +239,6 @@ namespace ChatApp.Infrastructure.Persistence.Migrations
                 name: "IX_ChatMessages_Timestamp",
                 table: "ChatMessages",
                 column: "Timestamp");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ChatRooms_ApplicationUserId",
-                table: "ChatRooms",
-                column: "ApplicationUserId");
         }
 
         /// <inheritdoc />
@@ -278,10 +266,10 @@ namespace ChatApp.Infrastructure.Persistence.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "ChatRooms");
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "ChatRooms");
         }
     }
 }

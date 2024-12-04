@@ -8,5 +8,4 @@ public class ApplicationUser : IdentityUser
 {
     public string Name { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-    public virtual ICollection<ChatRoom> ChatRooms { get; set; }
 }

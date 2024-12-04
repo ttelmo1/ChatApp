@@ -35,14 +35,15 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, ResultViewModel
                 isPersistent: false,
                 lockoutOnFailure: false);
            
-            if (result.Succeeded)
-            {
-                var user = await _userManager.FindByNameAsync(request.Username);
-                var token = GenerateJwtToken(user);
-                return ResultViewModel<string>.Success(token);
-            }
 
-            return ResultViewModel<string>.Error("Invalid login attempt");
+            var user = await _userManager.FindByNameAsync(request.Username);
+            if (result.Succeeded == false || user == null)
+            {
+                return ResultViewModel<string>.Error("Invalid username or password");
+            }
+            var token = GenerateJwtToken(user);
+            return ResultViewModel<string>.Success(token);
+
         }
         catch (Exception ex)
         {

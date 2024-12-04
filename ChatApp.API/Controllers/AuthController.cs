@@ -29,6 +29,8 @@ public class AuthController : ControllerBase
     {
         var command = new LoginCommand(loginDto);
         var result = await _mediator.Send(command);
+        if(result.IsSuccess == false) 
+            return BadRequest(result.Message);
         return Ok(result.Data);
     }
 }

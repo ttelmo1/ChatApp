@@ -20,6 +20,5 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
         builder.Entity<ChatMessage>()
             .HasIndex(m => m.Timestamp);
 
-        // builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }
 }

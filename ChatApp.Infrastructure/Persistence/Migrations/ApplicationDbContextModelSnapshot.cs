@@ -38,9 +38,6 @@ namespace ChatApp.Infrastructure.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsFromBot")
-                        .HasColumnType("bit");
-
                     b.Property<DateTime>("Timestamp")
                         .HasColumnType("datetime2");
 
@@ -62,12 +59,7 @@ namespace ChatApp.Infrastructure.Persistence.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("ApplicationUserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("ApplicationUserId");
 
                     b.ToTable("ChatRooms");
                 });
@@ -286,13 +278,6 @@ namespace ChatApp.Infrastructure.Persistence.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ChatApp.Domain.Entities.ChatRoom", b =>
-                {
-                    b.HasOne("ChatApp.Infrastructure.Identity.ApplicationUser", null)
-                        .WithMany("ChatRooms")
-                        .HasForeignKey("ApplicationUserId");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -347,11 +332,6 @@ namespace ChatApp.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("ChatApp.Domain.Entities.ChatRoom", b =>
                 {
                     b.Navigation("Messages");
-                });
-
-            modelBuilder.Entity("ChatApp.Infrastructure.Identity.ApplicationUser", b =>
-                {
-                    b.Navigation("ChatRooms");
                 });
 #pragma warning restore 612, 618
         }

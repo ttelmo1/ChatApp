@@ -32,8 +32,7 @@ public class SendMessageCommandHandler : IRequestHandler<SendMessageCommand, Uni
                 var notFoundMessage = new ChatMessage(
                     quote.Message,
                     "StockBot",
-                    request.ChatRoomId,
-                    true);
+                    request.ChatRoomId);
 
                 await _rabbitMQService.PublishAsync("stock_quotes", notFoundMessage);
                 return Unit.Value;
@@ -42,8 +41,7 @@ public class SendMessageCommandHandler : IRequestHandler<SendMessageCommand, Uni
             var botMessage = new ChatMessage(
                 $"{stockCode.ToUpper()}: quote is ${quote.Data} per share",
                 "StockBot",
-                request.ChatRoomId,
-                true);
+                request.ChatRoomId);
 
             await _rabbitMQService.PublishAsync("stock_quotes", botMessage);
             return Unit.Value;
