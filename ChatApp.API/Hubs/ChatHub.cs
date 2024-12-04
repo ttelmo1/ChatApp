@@ -8,13 +8,10 @@ namespace ChatApp.API.Hubs;
 [Authorize]
 public class ChatHub : Hub
 {
-    private readonly IRequestHandler<SendMessageCommand, Unit> _sendMessageCommandHandler;
     private readonly IMediator _mediator;
 
-    public ChatHub(IRequestHandler<SendMessageCommand, Unit> sendMessageCommandHandler,
-        IMediator mediator)
+    public ChatHub(IMediator mediator)
     {
-        _sendMessageCommandHandler = sendMessageCommandHandler;
         _mediator = mediator;
     }
 
@@ -46,7 +43,7 @@ public class ChatHub : Hub
             ChatRoomId = roomName
         };
 
-        await _sendMessageCommandHandler.Handle(command, CancellationToken.None);
+        await _mediator.Send(command);
 
         if(message.StartsWith("/stock=")) return;
 
