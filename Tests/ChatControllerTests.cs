@@ -1,39 +1,23 @@
-using System.Threading;
-using System.Threading.Tasks;
 using ChatApp.API.Controllers;
-using ChatApp.API.Hubs;
 using ChatApp.Application.Commands.CreateRoom;
 using ChatApp.Application.Queries.GetMessages;
 using ChatApp.Application.Queries.GetRooms;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 using Moq;
-using Xunit;
-using FluentAssertions;
 using ChatApp.Domain.Entities;
-using ChatApp.Infraestructure.Services.Interfaces;
 
-namespace ChatApp.Tests.Controllers;
+namespace Tests;
 
 public class ChatControllerTests
 {
     private readonly Mock<IMediator> _mediatorMock;
-    private readonly Mock<IRabbitMQService> _rabbitMQServiceMock;
-    private readonly Mock<IHubContext<ChatHub>> _hubContextMock;
     private readonly ChatController _controller;
 
     public ChatControllerTests()
     {
         _mediatorMock = new Mock<IMediator>();
-        _rabbitMQServiceMock = new Mock<IRabbitMQService>();
-        _hubContextMock = new Mock<IHubContext<ChatHub>>();
-            
-        _controller = new ChatController(
-            _mediatorMock.Object,
-            _rabbitMQServiceMock.Object,
-            _hubContextMock.Object
-        );
+        _controller = new ChatController(_mediatorMock.Object);
     }
 
     [Fact]
@@ -54,19 +38,20 @@ public class ChatControllerTests
     }
 
     [Fact]
-    public async Task CreateRoom_ReturnsCreatedAtAction()
+    public async Task CreateRoom_ReturnsOkResult_WithRoomId()
     {
         // Arrange
-        var expectedRoomId = "room123";
-        _mediatorMock.Setup(m => m.Send(It.IsAny<CreateRoomCommand>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(expectedRoomId);
+        var expectedRoomId = Guid.NewGuid().ToString();
+        _mediatorMock.Setup(m => m.Send(It.IsAny<CreateRoomCommand>(), default))
+                .ReturnsAsync(expectedRoomId);
 
         // Act
         var result = await _controller.CreateRoom();
 
         // Assert
-        var createdAtActionResult = Assert.IsType<CreatedAtActionResult>(result);
-        Assert.Equal(nameof(_controller.GetRooms), createdAtActionResult.ActionName);
+        var okResult = Assert.IsType<OkObjectResult>(result);
+        var response = Assert.IsType<string>(okResult.Value);
+        Assert.Equal(expectedRoomId, response);
     }
 
     [Fact]
