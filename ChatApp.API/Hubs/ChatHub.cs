@@ -1,6 +1,5 @@
 using ChatApp.Application.Commands.SendMessage;
 using ChatApp.Application.Queries.GetMessages;
-using ChatApp.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;

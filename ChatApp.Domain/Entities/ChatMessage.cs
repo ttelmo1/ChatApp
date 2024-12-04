@@ -1,5 +1,3 @@
-using System;
-
 namespace ChatApp.Domain.Entities;
 
 public class ChatMessage

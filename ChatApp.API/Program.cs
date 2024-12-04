@@ -1,4 +1,3 @@
-using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using ChatApp.API.Hubs;
 using ChatApp.API.Services;

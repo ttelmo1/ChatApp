@@ -1,4 +1,3 @@
-using System;
 using ChatApp.Domain.Entities;
 
 namespace ChatApp.Domain.Repositories;

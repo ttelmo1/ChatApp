@@ -1,4 +1,3 @@
-using System;
 using ChatApp.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using ChatApp.Domain.Repositories;

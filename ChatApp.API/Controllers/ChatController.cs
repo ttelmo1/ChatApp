@@ -1,4 +1,3 @@
-using System;
 using ChatApp.API.Hubs;
 using ChatApp.Application.Commands.CreateRoom;
 using ChatApp.Application.Queries.GetMessages;
