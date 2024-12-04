@@ -1,19 +1,20 @@
 using System.Text;
 using ChatApp.API.Hubs;
 using ChatApp.API.Services;
-using ChatApp.Application.Commands.SendMessage;
 using ChatApp.Infrastructure;
 using ChatApp.Infrastructure.Data;
 using ChatApp.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using ChatApp.Application;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services
+    .AddApplication()
     .AddInfrastructure(builder.Configuration);
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
@@ -28,9 +29,6 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 .AddDefaultTokenProviders();
 
 builder.Services.AddHostedService<StockConsumerService>();
-
-
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(SendMessageCommandHandler).Assembly));
 
 builder.Services.AddCors(options =>
 {

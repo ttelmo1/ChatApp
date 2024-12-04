@@ -1,11 +1,8 @@
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using ChatApp.API.DTOs.User;
-using ChatApp.Infrastructure.Identity;
-using Microsoft.AspNetCore.Identity;
+using ChatApp.Application.Commands.Login;
+using ChatApp.Application.Commands.Register;
+using ChatApp.Application.DTOs.User;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
 
 namespace ChatApp.API.Controllers;
 
@@ -13,93 +10,26 @@ namespace ChatApp.API.Controllers;
 [ApiController]
 public class AuthController : ControllerBase
 {
-    private readonly UserManager<ApplicationUser> _userManager;
-    private readonly SignInManager<ApplicationUser> _signInManager;
-    private readonly IConfiguration _configuration;
-
-    public AuthController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IConfiguration configuration)
+    private readonly IMediator _mediator;
+    public AuthController(IMediator mediator)
     {
-        _userManager = userManager;
-        _signInManager = signInManager;
-        _configuration = configuration;
+        _mediator = mediator;
     }
 
     [HttpPost("register")]
     public async Task<IActionResult> Register(RegisterDto registerDto)
     {
-        try
-        {
-            var user = new ApplicationUser
-            {
-                Name = registerDto.Username,
-                UserName = registerDto.Username,
-                Email = registerDto.Email
-            };
-
-            var result = await _userManager.CreateAsync(user, registerDto.Password);
-
-            if (result.Succeeded)
-            {
-                return Ok(new { message = "User registered successfully" });
-            }
-
-            return BadRequest(result.Errors);
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-        }
+        var command = new RegisterCommand(registerDto);
+        var result = await _mediator.Send(command);
+        return Ok(result.Data);
     }
 
     [HttpPost("login")]
     public async Task<IActionResult> Login(LoginDto loginDto)
     {
-        try
-        {
-           var result = await _signInManager.PasswordSignInAsync(
-                loginDto.Username,
-                loginDto.Password,
-                isPersistent: false,
-                lockoutOnFailure: false);
-           
-            if (result.Succeeded)
-            {
-                var user = await _userManager.FindByNameAsync(loginDto.Username);
-                var token = GenerateJwtToken(user);
-                return Ok(new { token });
-            }
-
-            return Unauthorized("Invalid login attempt");
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-        }
-    }
-
-    private string GenerateJwtToken(ApplicationUser user)
-    {
-        var claims = new[]
-        {
-            new Claim(ClaimTypes.Name, user.UserName),        
-            new Claim(ClaimTypes.NameIdentifier, user.Id), 
-            new Claim(JwtRegisteredClaimNames.Sub, user.Id),
-            new Claim(JwtRegisteredClaimNames.Email, user.Email),
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-        };
-
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
-        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-        var token = new JwtSecurityToken(
-            issuer: _configuration["Jwt:Issuer"],
-            audience: _configuration["Jwt:Audience"],
-            claims: claims,
-            expires: DateTime.Now.AddMinutes(30),
-            signingCredentials: creds
-        );
-
-        return new JwtSecurityTokenHandler().WriteToken(token);
+        var command = new LoginCommand(loginDto);
+        var result = await _mediator.Send(command);
+        return Ok(result.Data);
     }
 }
 
