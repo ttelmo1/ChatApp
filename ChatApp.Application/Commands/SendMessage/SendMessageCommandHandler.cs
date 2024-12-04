@@ -23,7 +23,7 @@ public class SendMessageCommandHandler : IRequestHandler<SendMessageCommand, Uni
 
     public async Task<Unit> Handle(SendMessageCommand request, CancellationToken cancellationToken)
     {
-        if (request.Content.StartsWith("/stock="))
+        if (request.Content.Trim().StartsWith("/stock="))
         {
             var stockCode = request.Content.Substring(7);
             var quote = await _stockQuoteService.GetStockQuoteAsync(stockCode);
